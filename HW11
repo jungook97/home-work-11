@@ -1,0 +1,118 @@
+using System;
+using System.Collections.Generic;
+
+// Интерфейс ISmartDevice - барлық ақылды құрылғылар үшін жалпы мінез-құлық анықталады
+public interface ISmartDevice
+{
+    void TurnOn();  // Құрылғыны қосу
+    void TurnOff(); // Құрылғыны өшіру
+    void ShowStatus(); // Құрылғының ағымдағы күйін көрсету
+}
+
+// SmartLamp класы - ақылды шам үшін іске асыру
+public class SmartLamp : ISmartDevice
+{
+    public bool IsOn { get; private set; } // Шамның күйі (қосулы/өшірілген)
+    public string Color { get; private set; } // Шамның түсі
+
+    public SmartLamp()
+    {
+        IsOn = false;
+        Color = "White"; // Әдепкі түс
+    }
+
+    public void TurnOn()
+    {
+        IsOn = true;
+        Console.WriteLine("The lamp is turned on."); // Шам қосылды
+    }
+
+    public void TurnOff()
+    {
+        IsOn = false;
+        Console.WriteLine("The lamp is turned off."); // Шам өшірілді
+    }
+
+    public void ShowStatus()
+    {
+        string status = IsOn ? "on" : "off";
+        Console.WriteLine($"Lamp is {status}. Current color: {Color}"); // Шамның ағымдағы күйі және түсі
+    }
+
+    public void ChangeColor(string color)
+    {
+        Color = color;
+        Console.WriteLine($"Lamp color changed to {Color}"); // Шамның түсі өзгертілді
+    }
+}
+
+// SmartThermostat класы - ақылды термостат үшін іске асыру
+public class SmartThermostat : ISmartDevice
+{
+    public bool IsOn { get; private set; } // Термостаттың күйі (қосулы/өшірілген)
+    public int Temperature { get; private set; } // Қазіргі температура
+
+    public SmartThermostat()
+    {
+        IsOn = false;
+        Temperature = 22; // Әдепкі температура
+    }
+
+    public void TurnOn()
+    {
+        IsOn = true;
+        Console.WriteLine("The thermostat is turned on."); // Термостат қосылды
+    }
+
+    public void TurnOff()
+    {
+        IsOn = false;
+        Console.WriteLine("The thermostat is turned off."); // Термостат өшірілді
+    }
+
+    public void ShowStatus()
+    {
+        string status = IsOn ? "on" : "off";
+        Console.WriteLine($"Thermostat is {status}. Current temperature: {Temperature}°C"); // Термостаттың күйі және температурасы
+    }
+
+    public void SetTemperature(int temp)
+    {
+        Temperature = temp;
+        Console.WriteLine($"Thermostat temperature set to {Temperature}°C"); // Термостат температурасы өзгертілді
+    }
+}
+
+// Бағдарламаның негізгі класы
+class Program
+{
+    static void Main()
+    {
+        // Құрылғылардың тізімін жасау
+        List<ISmartDevice> devices = new List<ISmartDevice>
+        {
+            new SmartLamp(),
+            new SmartThermostat()
+        };
+
+        // Әр құрылғы үшін әдістерді шақыру
+        foreach (var device in devices)
+        {
+            device.TurnOn();     // Қосылу
+            device.ShowStatus(); // Күйін көрсету
+            device.TurnOff();    // Өшіру
+            device.ShowStatus(); // Күйін көрсету
+        }
+
+        // Қосымша әдістерді пайдалану
+        SmartLamp lamp = new SmartLamp();
+        lamp.TurnOn();
+        lamp.ChangeColor("Blue");
+        lamp.ShowStatus();
+
+        SmartThermostat thermostat = new SmartThermostat();
+        thermostat.TurnOn();
+        thermostat.SetTemperature(25);
+        thermostat.ShowStatus();
+    }
+}
